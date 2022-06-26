@@ -11,7 +11,7 @@ const spriteHeight = 523;
 const playerImage = new Image();
 playerImage.src = 'shadow_dog.png';
 
-let playerState = 'fall';
+let playerState = 'idle';
 
 let gameFrame = 0;
 const staggerFrames = 5;
@@ -71,8 +71,9 @@ animationStates.forEach((state,index)=>{
     spriteAnimations[state.name] = frames;
 });
 
+setDropdown();
+
 let countc = 1;
-console.log(spriteAnimations);
 function animate(){
     ctx.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
    
@@ -81,13 +82,22 @@ function animate(){
     let frameY = spriteAnimations[playerState].loc[position].y;
     ctx.drawImage(playerImage,frameX ,frameY,
         spriteWidth,spriteHeight,0,0,spriteWidth,spriteHeight);
-    
-      //  console.log(spriteAnimations[playerState])
        if(countc ==1){
         countc = 2;
-        console.log(spriteAnimations[playerState]);
        }
         gameFrame++;
         requestAnimationFrame(animate);
 }
 animate();
+
+function setDropdown(){
+    let dropdown = document.querySelector('#actionDropwdown');
+    animationStates.forEach(e=>{
+        let op = new Option(e.name,e.name);
+       dropdown.add(op,undefined);
+    })
+
+    dropdown.addEventListener('change',()=>{
+        playerState = dropdown.value;
+    });
+}
